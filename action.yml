@@ -14,6 +14,7 @@ runs:
            sudo apt update && sudo apt install -qy openssh-server tmux
       - name: Disable password auth
         shell: bash
+        id: disablepwd
         run: |
           echo "PasswordAuthentication no" | sudo tee -a /etc/ssh/sshd_config
           echo "ChallengeResponseAuthentication no" | sudo tee -a /etc/ssh/sshd_config
@@ -22,9 +23,13 @@ runs:
           sudo systemctl daemon-reload
           sudo systemctl restart sshd --now
       - name: Install actor's keys
+        shell: bash
+        id: keys
         run: |
           mkdir -p ~/.ssh
           
           curl -s "https://api.github.com/users/$GITHUB_ACTOR/keys" | jq -r '.[].key' > ~/.ssh/authorized_keys
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/authorized_keys
+
+
