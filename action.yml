@@ -11,7 +11,7 @@ runs:
         shell: bash
         id: download
         run: |
-           sudo apt update && sudo apt install -qy openssh-server tmux
+           sudo apt update && sudo apt install -qy openssh-server
       - name: Disable password auth
         shell: bash
         id: disablepwd
