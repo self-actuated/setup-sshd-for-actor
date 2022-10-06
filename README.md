@@ -4,5 +4,5 @@ This GitHub Action sets up an SSH server with the actor's SSH keys found on GitH
 
 ```yaml
   - name: Setup SSH server for Actor
-    uses: alexellis/sshd-actor@master
+    uses: alexellis/setup-sshd-acto@master
 ```
