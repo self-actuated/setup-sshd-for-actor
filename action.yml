@@ -1,0 +1,30 @@
+# Copyright (c) 2022 OpenFaaS Ltd
+name: 'Install SSHD for actor'
+description: 'Install SSHD for actor'
+branding:
+  icon: 'arrow-right-circle'
+  color: 'gray-dark'
+runs:
+    using: 'composite'
+    steps:
+      - name: Install SSHD
+        shell: bash
+        id: download
+        run: |
+           sudo apt update && sudo apt install -qy openssh-server tmux
+      - name: Disable password auth
+        shell: bash
+        run: |
+          echo "PasswordAuthentication no" | sudo tee -a /etc/ssh/sshd_config
+          echo "ChallengeResponseAuthentication no" | sudo tee -a /etc/ssh/sshd_config
+          sudo sed -i "s/.*PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config
+      
+          sudo systemctl daemon-reload
+          sudo systemctl restart sshd --now
+      - name: Install actor's keys
+        run: |
+          mkdir -p ~/.ssh
+          
+          curl -s "https://api.github.com/users/$GITHUB_ACTOR/keys" | jq -r '.[].key' > ~/.ssh/authorized_keys
+          chmod 700 ~/.ssh
+          chmod 600 ~/.ssh/authorized_keys
