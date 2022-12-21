@@ -11,9 +11,11 @@ runs:
         shell: bash
         id: download
         run: |
+            sudo systemctl status|grep ssh
+            
            sudo apt update && \
             sudo apt install -qy openssh-server && \
-            sudo systemctl enable sshd
+            sudo systemctl enable ssh
       - name: Disable password auth
         shell: bash
         id: disablepwd
@@ -24,9 +26,9 @@ runs:
       
           sudo systemctl daemon-reload
           
-          systemctl status|grep ssh
+          sudo systemctl status|grep ssh
           
-          sudo systemctl restart sshd --now
+          sudo systemctl restart ssh --now
       - name: Install actor's keys
         shell: bash
         id: keys
