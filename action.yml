@@ -13,8 +13,8 @@ runs:
         run: |
             sudo systemctl status|grep ssh
             
-            sudo apt update && \
-            sudo apt install -qy openssh-server && \
+            sudo apt update -qqy && \
+            sudo apt install -qqy openssh-server && \
             sudo systemctl enable ssh
       - name: Disable password auth
         shell: bash
