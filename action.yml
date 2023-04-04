@@ -16,6 +16,8 @@ runs:
             sudo apt update && \
             sudo apt install -qqy openssh-server && \
             sudo systemctl enable ssh
+            
+            if [ -z "$(find /etc/ssh/ -name "ssh_host_*"|xargs echo -n)" ]; then DEBIAN_FRONTEND=noninteractive sudo -E dpkg-reconfigure openssh-server ;  fi
       - name: Disable password auth
         shell: bash
         id: disablepwd
