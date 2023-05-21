@@ -11,10 +11,12 @@ runs:
         shell: bash
         id: download
         run: |
+            echo Installing/re-configuring sshd
+
             sudo systemctl status|grep ssh
             
-            sudo apt update && \
-            sudo apt install -qqy openssh-server && \
+            sudo apt update -qqqy && \
+            sudo apt install -qqqy openssh-server && \
             sudo systemctl enable ssh
             
             if [ -z "$(find /etc/ssh/ -name "ssh_host_*"|xargs echo -n)" ]; then DEBIAN_FRONTEND=noninteractive sudo -E dpkg-reconfigure openssh-server ;  fi
